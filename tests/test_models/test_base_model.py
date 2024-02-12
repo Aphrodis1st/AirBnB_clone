@@ -10,26 +10,26 @@ from datetime import datetime
 from models.base_model import BaseModel
 
 class TestBaseModel(unittest.TestCase):
-    """A class that implements test cases against the BaseModel module."""
+    """A class that implements test cases against the base model module"""
 
     def test_if_BaseModel_instance_has_id(self):
-        """Check if a BaseModel instance has an id assigned on initialization."""
+        """A function that checks that instance has an id assigned on initialization"""
         b = BaseModel()
         self.assertTrue(hasattr(b, "id"))
 
     def test_str_representation(self):
-        """Check if the string representation is appropriate."""
+        """A function that checks if the string representation is appropriate"""
         b = BaseModel()
-        expected_str = "[BaseModel] ({}) {}".format(b.id, b.__dict__)
-        self.assertEqual(str(b), expected_str)
+        self.assertEqual(str(b),
+                         "[BaseModel] ({}) {}".format(b.id, b.__dict__))
 
-    def test_ids_are_unique(self):
-        """Check if ids are generated randomly and are unique."""
+    def test_ids_is_unique(self):
+        """A function that checks if id is generated randomly and uniquely"""
         b1 = BaseModel()
         b2 = BaseModel()
         self.assertNotEqual(b1.id, b2.id)
 
-def test_type_of_id_is_str(self):
+    def test_type_of_id_is_str(self):
         """A function that checks that id generated is a str object"""
         b = BaseModel()
         self.assertTrue(type(b.id) is str)
@@ -221,11 +221,10 @@ def test_type_of_id_is_str(self):
         with self.assertRaises(TypeError):
             b.to_dict(None)
 
-def test_to_dict_not_dunder_dict(self):
-        """Check that to_dict() returns a dict object not equal to __dict__."""
+    def test_to_dict_not_dunder_dict(self):
+        """A function that checks that to_dict() is a dict object not equal to __dict__"""
         bm = BaseModel()
         self.assertNotEqual(bm.to_dict(), bm.__dict__)
 
 if __name__ == "__main__":
     unittest.main()
-

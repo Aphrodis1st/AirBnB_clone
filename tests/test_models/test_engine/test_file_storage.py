@@ -11,34 +11,37 @@ from models.place import Place
 from models.review import Review
 
 class FileStorage:
-    """A class that defines the attributes and methods for the FileStorage module."""
+    """ A class that defines the attributes for the FileStorage modules"""
 
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """Return the dictionary __objects.
-
-        Returns:
-        dict: A dictionary containing all stored objects.
+        """A function that returns the dictionary __objects
+                    
+            PARAMETERS
+            self: the constructor variable
         """
+        
         return self.__objects
 
     def new(self, obj):
-        """Add the given object to __objects with key <obj class name>.id.
-
-        Parameters:
-        self (FileStorage): The instance of the FileStorage class.
-        obj: The object to be added to __objects.
+        """A function that sets in __objects the `obj` with key <obj class name>.id
+                            
+            PARAMETERS
+            self: the constructor variable
+            obj: the object with key
         """
+        
         self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
-        """Serialize __objects to the JSON file.
-
-        Parameters:
-        self (FileStorage): The instance of the FileStorage class.
+        """A function that serializes __objects to the JSON file
+                            
+            PARAMETERS
+            self: the constructor variable
         """
+        
         with open(self.__file_path, mode="w") as f:
             dict_storage = {}
             for k, v in self.__objects.items():
@@ -46,18 +49,15 @@ class FileStorage:
             json.dump(dict_storage, f)
 
     def reload(self):
-        """Deserialize the JSON file to __objects.
-
-        Parameters:
-        self (FileStorage): The instance of the FileStorage class.
-
-        Returns:
-        None
+        """A function that deserializes the JSON file to __objects
+                                    
+            PARAMETERS
+            self: the constructor variable
         """
+        
         try:
             with open(self.__file_path, encoding="utf-8") as f:
                 for obj in json.load(f).values():
                     self.new(eval(obj["__class__"])(**obj))
         except FileNotFoundError:
             return
-

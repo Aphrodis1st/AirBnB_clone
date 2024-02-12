@@ -10,15 +10,16 @@ from console import HBNBCommand
 from io import StringIO
 from unittest.mock import patch
 
-class TestHBNBCommandPrompting(unittest.TestCase):
-    """A class that implements tests against the command interpreter prompt."""
+class TestHBNBCommand_prompting(unittest.TestCase):
+    """A class that implements test against the command interpreter prompt"""
 
     def test_prompt_string(self):
-        """Check for a string at the command prompt."""
+        """A function that checks for a string at the command prompt"""
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
     def test_empty_line(self):
-        """Check for an empty line at the command prompt."""
+        """A function that checks for an empty line at the command prompt"""
+        
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(""))
             self.assertEqual("", output.getvalue().strip())
@@ -1709,4 +1710,3 @@ class TestHBNBCommand_count(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

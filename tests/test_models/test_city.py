@@ -6,20 +6,19 @@ from models.base_model import BaseModel
 from models.city import City
 
 class TestCity(unittest.TestCase):
-    """A class that implements test cases against the City module."""
+    """A class that implements test cases against the city module"""
 
     def setUp(self):
-        """Set up the test environment before testing occurs."""
+		"""A function that tests the code to be executed before testing occurs"""
         self.city = City()
         self.attr_list = ["state_id", "name"]
 
     def test_if_city_is_a_subclass_of_basemodel(self):
-        """Check if City is a subclass of BaseModel."""
+		"""A function that checks if city is a subclass of basemodel"""
         self.assertTrue(issubclass(type(self.city), BaseModel))
 
     def test_if_attrs_are_class_attrs(self):
-        """Check if the class attributes are present and initialized as empty strings."""
+		"""A function that checks if the class attributes are present"""
         for attr in self.attr_list:
             self.assertIs(type(getattr(self.city, attr)), str)
-            self.assertEqual(getattr(self.city, attr), "")
-
+            self.assertFalse(bool(getattr(self.city, attr)))

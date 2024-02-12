@@ -10,4 +10,3 @@
 		3. Create new objects
 		4. Destroy an objects
 
-``How are you going to use it?

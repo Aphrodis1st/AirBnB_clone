@@ -26,21 +26,12 @@ CLASSES=[
     ]
 
 def parse(arg):
+    """ A function that parses the command
 
-    """A function that parses the command string containing commands.
-
-    This function extracts commands enclosed in curly braces '{}' or square brackets '[]' from the given string.
-
-    Parameters:
-    arg (str): The input string containing commands.
-
-    Returns:
-    list: A list of parsed commands. Each command is a string without leading or trailing commas.
-
-    Example:
-    >>> parse("command1, command2, {nested_command1, nested_command2}, [option1, option2]")
-    ['command1', 'command2', '{nested_command1, nested_command2}', '[option1, option2]']
+        PARAMETERS
+            arg: string containing commands
     """
+
     curly_braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
@@ -59,23 +50,13 @@ def parse(arg):
 
 
 def is_missing(args):
-
-    """Check if the class name is missing or doesn't exist.
-
-    This function takes a string containing commands, parses it to extract the class name,
-    and then checks if the class name is missing or doesn't exist in a predefined list of classes.
-
-    Parameters:
-    args (str): The input string containing commands.
-
-    Returns:
-    list or None: If the class name is missing or doesn't exist, an appropriate message is printed,
-    and the function returns None. Otherwise, it returns a list containing the parsed commands.
-
-    Example:
-    >>> is_missing("Class1 command1, command2")
-    ['Class1', 'command1', 'command2']
+    """ A function that checks if the class name is missing or doesn't
+        exist
+    
+		PARAMETERS
+            args: string containing commands
     """
+
     arg_list = parse(args)
 
     if len(arg_list) == 0:
@@ -87,45 +68,26 @@ def is_missing(args):
 
 
 class HBNBCommand(cmd.Cmd):
-
-    """A class that defines the command interpreter for hbnb."""
-
+    """A class that defines the command interpreter"""
+    
     prompt = "(hbnb)"
     storage = models.storage
 
     def emptyline(self):
-
-    """Execute a command when an empty line + <ENTER> key is pressed.
-
-        This method is called when the user presses the <ENTER> key without entering any command.
-        It does nothing by default, allowing the prompt to be repeated without executing a command.
-
-        Example:
-        (hbnb)> [press <ENTER>]
-        (hbnb)>
+        """ A function that defines a command to be executed
+            when an empty line + <ENTER> key is pressed
         """
-
         pass
 
     def default(self, arg):
-       
-    """Execute a default behavior for the cmd module when an input is invalid.
-
-    This method is called by the cmd module when an entered command is not recognized.
-    It attempts to interpret the command based on a predefined action map, supporting
-    commands like "all", "show", "destroy", "count", "update", and "create".
-
-    Parameters:
-    self (HBNBCommand): The instance of the HBNBCommand class.
-    arg (str): The input string containing the unrecognized command.
-
-    Returns:
-    bool: True if the command is successfully interpreted and executed, False otherwise.
-
-    Example:
-    (hbnb)> invalid_command
-    *** Unknown syntax: invalid_command
-    """ 
+        """ A function that defines the default behaviour for
+            the cmd module when an input is invalid
+        
+            PARAMETERS
+                self: the constructor variable
+                arg: string containing commands
+        """
+        
         action_map = {
             "all": self.do_all,
             "show": self.do_show,
@@ -149,21 +111,18 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_EOF(self, argv):
-	"""Execute the Quit menu command to exit the program.
-
-          This method is called when the user inputs the "quit" command.
-
-          Parameters:
-          self (HBNBCommand): The instance of the HBNBCommand class.
-          argv (str): The input string containing the command.
-
+        """ A function that executes the EOF menu command to 
+            exit the program
+            
+            PARAMETERS
+                self: the constructor variable
+                argv: string containing commands
         """
 
         print("")
         return True
 
     def do_quit(self, argv):
-
         """ A function that executes the Quit menu command to exit
             the program
 
@@ -175,7 +134,6 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, argv):
-
         """ A function that executes the Create menu command to create
             a new instance of the BaseModel class, save it (to a 
             JSON file) and print the id
@@ -191,7 +149,6 @@ class HBNBCommand(cmd.Cmd):
             self.storage.save()
 
     def do_show(self, argv):
-
         """ A function that executes the Show menu command and prints the
             string representation of an instance based on the class name
             and id
@@ -213,7 +170,6 @@ class HBNBCommand(cmd.Cmd):
                     print(self.storage.all()[key])
 
     def do_all(self, argv):
-
         """ A function that executes the All menu command and prints all 
             string representation of all instances based on or not on the 
             class name
@@ -235,7 +191,6 @@ class HBNBCommand(cmd.Cmd):
                        if arg_list[0] in str(obj)])
 
     def do_destroy(self, argv):
-
         """ A function that execuites the Destroy menu command and deletes
             a class instance based on the name and given id and saves the 
             changes to the JSON file
@@ -258,7 +213,6 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
 
     def do_update(self, argv):
-
         """ A function that executes the Update menu command and updates 
             an instance based on the class name and id by adding or updating 
             attribute and saves the changes the JSON file
@@ -292,7 +246,6 @@ class HBNBCommand(cmd.Cmd):
             self.storage.save()
 
     def do_count(self, arg):
-
         """ A function that executes the Count menu command and retrieve the 
             number of instances of a class
                             

@@ -61,6 +61,7 @@ section.filters button:hover {
 	list-style: none;
 	padding-top: 30px;
 	top: 3%;
+	z-index: 1;
 }
 
 .popover li h2 {

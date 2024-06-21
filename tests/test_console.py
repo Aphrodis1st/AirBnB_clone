@@ -1,6 +1,16 @@
 #!/usr/bin/python3
-"""The implementation of the Test Console module"""
+"""Defines unittests for console.py.
 
+Unittest classes:
+    TestHBNBCommand_prompting
+    TestHBNBCommand_help
+    TestHBNBCommand_exit
+    TestHBNBCommand_create
+    TestHBNBCommand_show
+    TestHBNBCommand_all
+    TestHBNBCommand_destroy
+    TestHBNBCommand_update
+"""
 import os
 import sys
 import unittest
@@ -10,49 +20,42 @@ from console import HBNBCommand
 from io import StringIO
 from unittest.mock import patch
 
+
 class TestHBNBCommand_prompting(unittest.TestCase):
-    """A class that implements test against the command interpreter prompt"""
+    """Unittests for testing prompting of the HBNB command interpreter."""
 
     def test_prompt_string(self):
-        """A function that checks for a string at the command prompt"""
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
     def test_empty_line(self):
-        """A function that checks for an empty line at the command prompt"""
-        
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(""))
             self.assertEqual("", output.getvalue().strip())
 
+
 class TestHBNBCommand_help(unittest.TestCase):
-    """A class that implements test against the command interpreter help menu
-        option
-    """
+    """Unittests for testing help messages of the HBNB command interpreter."""
 
     def test_help_quit(self):
-        """A function that checks for help info on the quit menu option"""
         h = "Quit command to exit the program."
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help quit"))
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_create(self):
-        """A function that checks for help info on the create menu option"""
-        h = ("Usage: create <class>\n "
-            "Create a new class instance and print its id.")
+        h = ("Usage: create <class>\n        "
+             "Create a new class instance and print its id.")
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help create"))
             self.assertEqual(h, output.getvalue().strip())
-    
+
     def test_help_EOF(self):
-        """A function that checks for help info on the EOF menu option"""
         h = "EOF signal to exit the program."
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help EOF"))
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_show(self):
-        """A function that checks for help info on the show menu option"""
         h = ("Usage: show <class> <id> or <class>.show(<id>)\n        "
              "Display the string representation of a class instance of"
              " a given id.")
@@ -61,7 +64,6 @@ class TestHBNBCommand_help(unittest.TestCase):
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_destroy(self):
-        """A function that checks for help info on the destroy menu option"""
         h = ("Usage: destroy <class> <id> or <class>.destroy(<id>)\n        "
              "Delete a class instance of a given id.")
         with patch("sys.stdout", new=StringIO()) as output:
@@ -69,17 +71,15 @@ class TestHBNBCommand_help(unittest.TestCase):
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_all(self):
-        """A function that checks for help info on the all menu option"""
         h = ("Usage: all or all <class> or <class>.all()\n        "
-             "Display string representations of all instances of a\n"
-             "given class. If no class is specified, displays all\n"
-             "instantiated objects.")
+             "Display string representations of all instances of a given class"
+             ".\n        If no class is specified, displays all instantiated "
+             "objects.")
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help all"))
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_count(self):
-        """A function that checks for help info on the count menu option"""
         h = ("Usage: count <class> or <class>.count()\n        "
              "Retrieve the number of instances of a given class.")
         with patch("sys.stdout", new=StringIO()) as output:
@@ -87,7 +87,6 @@ class TestHBNBCommand_help(unittest.TestCase):
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_update(self):
-        """A function that checks for help info on the update menu option"""
         h = ("Usage: update <class> <id> <attribute_name> <attribute_value> or"
              "\n       <class>.update(<id>, <attribute_name>, <attribute_value"
              ">) or\n       <class>.update(<id>, <dictionary>)\n        "
@@ -98,7 +97,6 @@ class TestHBNBCommand_help(unittest.TestCase):
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help(self):
-        """A function that checks for help info on the help menu option"""
         h = ("Documented commands (type help <topic>):\n"
              "========================================\n"
              "EOF  all  count  create  destroy  help  quit  show  update")
@@ -108,29 +106,22 @@ class TestHBNBCommand_help(unittest.TestCase):
 
 
 class TestHBNBCommand_exit(unittest.TestCase):
-    """A class that implements test against the command interpreter exit menu 
-        option
-    """
+    """Unittests for testing exiting from the HBNB command interpreter."""
 
     def test_quit_exits(self):
-        """A function that checks if the quit menu option exits the console"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("quit"))
 
     def test_EOF_exits(self):
-        """A function that checks if the EOF menu option exits the console"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("EOF"))
 
 
 class TestHBNBCommand_create(unittest.TestCase):
-    """A class that implements test against the command interpreter create menu
-        option
-    """
+    """Unittests for testing create from the HBNB command interpreter."""
 
     @classmethod
     def setUp(self):
-        """A function that tests the code to be executed before testing occurs"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -139,9 +130,6 @@ class TestHBNBCommand_create(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        """A function that checks the code that removes or renames the json data
-            file
-        """
         try:
             os.remove("file.json")
         except IOError:
@@ -152,27 +140,18 @@ class TestHBNBCommand_create(unittest.TestCase):
             pass
 
     def test_create_missing_class(self):
-        """A function that checks if a class is missing when the create menu option
-            is selected
-        """
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create"))
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_create_invalid_class(self):
-        """ A function that checks if a class exists when the create menu option is
-            selected
-        """
         correct = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create MyModel"))
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_create_invalid_syntax(self):
-        """ A function that checks if an incorrect command is sent with the create
-            command
-        """
         correct = "*** Unknown syntax: MyModel.create()"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.create()"))
@@ -183,7 +162,6 @@ class TestHBNBCommand_create(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_create_object(self):
-        """A function that checks if the create object is valid"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertLess(0, len(output.getvalue().strip()))
@@ -222,15 +200,10 @@ class TestHBNBCommand_create(unittest.TestCase):
 
 
 class TestHBNBCommand_show(unittest.TestCase):
-    """ A class that implements test against the command interpreter show menu
-        option
-    """
+    """Unittests for testing show from the HBNB command interpreter"""
 
     @classmethod
     def setUp(self):
-        """ A function that tests the code to be executed before testing
-            occurs
-        """
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -239,9 +212,6 @@ class TestHBNBCommand_show(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        """ A function that checks the code that removes or renames the json data
-            file
-        """
         try:
             os.remove("file.json")
         except IOError:
@@ -252,9 +222,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             pass
 
     def test_show_missing_class(self):
-        """ A function that checks if a class is missing when the show menu option 
-            is selected
-        """
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("show"))
@@ -264,9 +231,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_show_invalid_class(self):
-        """ A function that checks if an incorrect command is sent with the show
-            command
-        """
         correct = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("show MyModel"))
@@ -276,7 +240,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_show_missing_id_space_notation(self):
-        """A function that checks if the space notation is missing"""
         correct = "** instance id missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("show BaseModel"))
@@ -301,7 +264,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_show_missing_id_dot_notation(self):
-        """A function that checks if the dot notation is missing"""
         correct = "** instance id missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("BaseModel.show()"))
@@ -326,7 +288,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_show_no_instance_found_space_notation(self):
-        """A function that checks if the space notation is found"""
         correct = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("show BaseModel 1"))
@@ -351,7 +312,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_show_no_instance_found_dot_notation(self):
-        """A function that checks if the dot notation is found"""
         correct = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("BaseModel.show(1)"))
@@ -376,7 +336,6 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_show_objects_space_notation(self):
-        """A function that checks if the space notation is valid"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             testID = output.getvalue().strip()
@@ -434,8 +393,7 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(command))
             self.assertEqual(obj.__str__(), output.getvalue().strip())
 
-    def test_show_objects_dot_notation(self):
-        """A function that checks if the dot notation is valid"""
+    def test_show_objects_space_notation(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             testID = output.getvalue().strip()
@@ -495,13 +453,10 @@ class TestHBNBCommand_show(unittest.TestCase):
 
 
 class TestHBNBCommand_destroy(unittest.TestCase):
-    """ A class that implements test against the command interpreter destroy menu
-        option
-    """
+    """Unittests for testing destroy from the HBNB command interpreter."""
 
     @classmethod
     def setUp(self):
-        """A function that tests the code to be executed before testing occurs"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -510,9 +465,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        """ A function that checks the code that removes or renames the json data
-            file
-        """
         try:
             os.remove("file.json")
         except IOError:
@@ -524,7 +476,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
         storage.reload()
 
     def test_destroy_missing_class(self):
-        """A function that checks if the class is missing when the destroy menu option is selected"""
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("destroy"))
@@ -534,7 +485,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_destroy_invalid_class(self):
-        """A function that checks if the class is valid when the destroy menu option is selected"""
         correct = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("destroy MyModel"))
@@ -544,7 +494,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_destroy_id_missing_space_notation(self):
-        """A function that checks if the space notation is missing when the destroy menu option is selected"""
         correct = "** instance id missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("destroy BaseModel"))
@@ -569,7 +518,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_destroy_id_missing_dot_notation(self):
-        """A function that checks if the dot notation is missing when the destroy menu option is selected"""
         correct = "** instance id missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("BaseModel.destroy()"))
@@ -594,7 +542,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_destroy_invalid_id_space_notation(self):
-        """A function that checks if the space notation is valid when the destroy menu option is selected"""
         correct = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("destroy BaseModel 1"))
@@ -619,7 +566,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_destroy_invalid_id_dot_notation(self):
-        """A function that checks if the dot notation is valid when the destroy menu option is selected"""
         correct = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("BaseModel.destroy(1)"))
@@ -644,7 +590,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_destroy_objects_space_notation(self):
-        """A function that checks if the space notation object is destroyed"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             testID = output.getvalue().strip()
@@ -703,7 +648,6 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertNotIn(obj, storage.all())
 
     def test_destroy_objects_dot_notation(self):
-        """A function that checks if the dot notation object is destroyed"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             testID = output.getvalue().strip()
@@ -763,11 +707,10 @@ class TestHBNBCommand_destroy(unittest.TestCase):
 
 
 class TestHBNBCommand_all(unittest.TestCase):
-    """A class that implements test against the command interpreter all menu option"""
+    """Unittests for testing all of the HBNB command interpreter."""
 
     @classmethod
     def setUp(self):
-        """A function that tests the code to be executed before testing occurs"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -776,7 +719,6 @@ class TestHBNBCommand_all(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        """A function that checks the code that removes or renames the json data file"""
         try:
             os.remove("file.json")
         except IOError:
@@ -787,7 +729,6 @@ class TestHBNBCommand_all(unittest.TestCase):
             pass
 
     def test_all_invalid_class(self):
-        """A function that checks if the class is invalid when the all menu option is selected"""
         correct = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("all MyModel"))
@@ -797,7 +738,6 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_all_objects_space_notation(self):
-        """A function that checks if the space notation is missing when the all menu option is selected"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
@@ -817,7 +757,6 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertIn("Review", output.getvalue().strip())
 
     def test_all_objects_dot_notation(self):
-        """A function that checks if the dot notation is missing when the all menu option is selected"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
@@ -837,7 +776,6 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertIn("Review", output.getvalue().strip())
 
     def test_all_single_object_space_notation(self):
-        """A function that checks for the single object space notation when the all menu option is selected"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
@@ -876,7 +814,6 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertNotIn("BaseModel", output.getvalue().strip())
 
     def test_all_single_object_dot_notation(self):
-        """A function that checks for the single object dot notation when the all menu option is selected"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             self.assertFalse(HBNBCommand().onecmd("create User"))
@@ -914,14 +851,12 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertIn("Review", output.getvalue().strip())
             self.assertNotIn("BaseModel", output.getvalue().strip())
 
+
 class TestHBNBCommand_update(unittest.TestCase):
-    """A class that implements test against the command interpreter update menu
-        option
-    """
+    """Unittests for testing update from the HBNB command interpreter."""
 
     @classmethod
     def setUp(self):
-        """A function that tests the code to be executed before testing occurs"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -930,9 +865,6 @@ class TestHBNBCommand_update(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        """A function that checks the code that removes or renames the json data 
-            file
-        """
         try:
             os.remove("file.json")
         except IOError:
@@ -943,9 +875,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             pass
 
     def test_update_missing_class(self):
-        """A function that checks if the class is missing when the update menu
-            option is selected
-        """
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("update"))
@@ -955,9 +884,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_invalid_class(self):
-        """A function that checks if the class is invalid when the update menu 
-            option is selected
-        """
         correct = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("update MyModel"))
@@ -967,9 +893,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_missing_id_space_notation(self):
-        """A function that checks if the space notation is missing when the 
-            update menu option is selected
-        """
         correct = "** instance id missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("update BaseModel"))
@@ -994,9 +917,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_missing_id_dot_notation(self):
-        """A function that checks if the dot notation is missing when the 
-            update menu option is selected
-        """
         correct = "** instance id missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("BaseModel.update()"))
@@ -1021,9 +941,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_invalid_id_space_notation(self):
-        """A function that checks if the space notation is invalid when the 
-            update menu option is selected
-        """
         correct = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("update BaseModel 1"))
@@ -1048,9 +965,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_invalid_id_dot_notation(self):
-        """A function that checks if the dot notation is invalid when the 
-            update menu option is selected
-        """
         correct = "** no instance found **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("BaseModel.update(1)"))
@@ -1075,9 +989,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_missing_attr_name_space_notation(self):
-        """A function that checks if the space notation attribute name is 
-            missing when the update menu option is selecte
-        """
         correct = "** attribute name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
@@ -1123,9 +1034,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_missing_attr_name_dot_notation(self):
-        """A function that checks if the dot notation attribute name is 
-            missing when the update menu option is selected
-        """
         correct = "** attribute name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
@@ -1171,9 +1079,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_missing_attr_value_space_notation(self):
-        """A function that checks if the space notation attribute value is 
-            missing when the update menu option is selected
-        """
         correct = "** value missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
@@ -1226,9 +1131,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_missing_attr_value_dot_notation(self):
-        """A function that checks if the dot notation attribute value is 
-            missing when the update menu option is selected
-        """
         correct = "** value missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
@@ -1281,9 +1183,6 @@ class TestHBNBCommand_update(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
 
     def test_update_valid_string_attr_space_notation(self):
-        """A function that checks if the space notation attribute string is 
-            valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
             testId = output.getvalue().strip()
@@ -1341,9 +1240,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertTrue("attr_value", test_dict["attr_name"])
 
     def test_update_valid_string_attr_dot_notation(self):
-        """A function that checks if the dot notation attribute string is 
-            valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
             tId = output.getvalue().strip()
@@ -1401,9 +1297,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual("attr_value", test_dict["attr_name"])
 
     def test_update_valid_int_attr_space_notation(self):
-        """A function that checks if the space notation attribute integer is 
-            valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             testId = output.getvalue().strip()
@@ -1413,9 +1306,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(98, test_dict["max_guest"])
 
     def test_update_valid_int_attr_dot_notation(self):
-        """A function that checks if the dot notation attribute integer is 
-            valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             tId = output.getvalue().strip()
@@ -1425,9 +1315,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(98, test_dict["max_guest"])
 
     def test_update_valid_float_attr_space_notation(self):
-        """A function that checks if the space notation attribute float is 
-            valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             testId = output.getvalue().strip()
@@ -1437,9 +1324,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(7.2, test_dict["latitude"])
 
     def test_update_valid_float_attr_dot_notation(self):
-        """A function that checks if the dot notation attribute float is 
-            valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             tId = output.getvalue().strip()
@@ -1449,9 +1333,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(7.2, test_dict["latitude"])
 
     def test_update_valid_dictionary_space_notation(self):
-        """A function that checks if the space notation attribute dictionary 
-            is valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
             testId = output.getvalue().strip()
@@ -1516,9 +1397,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual("attr_value", test_dict["attr_name"])
 
     def test_update_valid_dictionary_dot_notation(self):
-        """A function that checks if the dot notation attribute dictionary 
-            is valid when the update menu option is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
             testId = output.getvalue().strip()
@@ -1583,9 +1461,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual("attr_value", test_dict["attr_name"])
 
     def test_update_valid_dictionary_with_int_space_notation(self):
-        """A function that checks if the space notation attribute dictionary 
-            with integer is valid when the update menu option is selected
-		"""
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             testId = output.getvalue().strip()
@@ -1596,9 +1471,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(98, test_dict["max_guest"])
 
     def test_update_valid_dictionary_with_int_dot_notation(self):
-        """A function that checks if the dot notation attribute dictionary 
-            with integer is valid when the update menu option is selected
-		"""
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             testId = output.getvalue().strip()
@@ -1609,9 +1481,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(98, test_dict["max_guest"])
 
     def test_update_valid_dictionary_with_float_space_notation(self):
-        """	A function that checks if the space notation attribute dictionary 
-            with float is valid when the update menu option is selected
-		"""
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             testId = output.getvalue().strip()
@@ -1622,9 +1491,6 @@ class TestHBNBCommand_update(unittest.TestCase):
         self.assertEqual(9.8, test_dict["latitude"])
 
     def test_update_valid_dictionary_with_float_dot_notation(self):
-        """	A function that checks if the dot notation attribute dictionary 
-            with float is valid when the update menu option is selected
-		"""
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create Place")
             testId = output.getvalue().strip()
@@ -1634,14 +1500,12 @@ class TestHBNBCommand_update(unittest.TestCase):
         test_dict = storage.all()["Place.{}".format(testId)].__dict__
         self.assertEqual(9.8, test_dict["latitude"])
 
+
 class TestHBNBCommand_count(unittest.TestCase):
-    """A class that implements test against the command interpreter count menu
-        option
-    """
+    """Unittests for testing count method of HBNB comand interpreter."""
 
     @classmethod
     def setUp(self):
-        """A function that tests the code to be executed before testing occurs"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -1650,9 +1514,6 @@ class TestHBNBCommand_count(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
-        """A function that checks the code that removes or renames the json data 
-            file
-        """
         try:
             os.remove("file.json")
         except IOError:
@@ -1663,15 +1524,11 @@ class TestHBNBCommand_count(unittest.TestCase):
             pass
 
     def test_count_invalid_class(self):
-        """A function that checks if the class is invalid when the count menu option
-            is selected
-        """
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.count()"))
             self.assertEqual("0", output.getvalue().strip())
 
     def test_count_object(self):
-        """A function that checks if the count object is valid"""
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
         with patch("sys.stdout", new=StringIO()) as output:
@@ -1707,6 +1564,7 @@ class TestHBNBCommand_count(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("Review.count()"))
             self.assertEqual("1", output.getvalue().strip())
+
 
 if __name__ == "__main__":
     unittest.main()

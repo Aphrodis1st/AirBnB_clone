@@ -1,6 +1,9 @@
 #!/usr/bin/python3
-"""The implementation of the FileStorage module"""
+"""
+Contains the FileStorage class model
 
+
+"""
 import json
 
 from models.base_model import BaseModel
@@ -11,38 +14,32 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 
+
 class FileStorage:
-    """ A class that defines the attributes for the FileStorage modules"""
+    """
+    serializes instances to a JSON file and
+    deserializes JSON file to instances
+    """
 
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """A function that returns the dictionary __objects
-                    
-            PARAMETERS
-            self: the constructor variable
         """
-        
+        Returns the dictionary __objects
+        """
         return self.__objects
 
     def new(self, obj):
-        """A function that sets in __objects the `obj` with key <obj class name>.id
-                            
-            PARAMETERS
-            self: the constructor variable
-            obj: the object with key
         """
-        
+        sets in __objects the `obj` with key <obj class name>.id
+        """
         self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
-        """A function that serializes __objects to the JSON file
-                            
-            PARAMETERS
-            self: the constructor variable
         """
-        
+        Serialize __objects to the JSON file
+        """
         with open(self.__file_path, mode="w") as f:
             dict_storage = {}
             for k, v in self.__objects.items():
@@ -50,12 +47,10 @@ class FileStorage:
             json.dump(dict_storage, f)
 
     def reload(self):
-        """A function that deserializes the JSON file to __objects
-                                    
-            PARAMETERS
-            self: the constructor variable
         """
-        
+        Deserializes the JSON file to __objects
+        -> Only IF it exists!
+        """
         try:
             with open(self.__file_path, encoding="utf-8") as f:
                 for obj in json.load(f).values():
